@@ -57,7 +57,7 @@ export default {
         window.addEventListener('keydown', this.onGlobalKeyDown)
         window.addEventListener('keyup', this.onGlobalKeyUp)
 
-        this.checkVersion()
+        // this.checkVersion()
     },
 
     beforeDestroy () {
