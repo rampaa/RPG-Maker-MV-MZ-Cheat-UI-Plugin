@@ -16,7 +16,7 @@ jobs:
           python-version: '3.14'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r deploy/requirements.txt
 
       - name: Build plugin archive
         run: python deploy/main.py --version "${{ github.event.release.tag_name }}"
