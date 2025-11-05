@@ -9,28 +9,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - uses: actions/checkout@v5
+      
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.14'
 
       - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        run: pip install -r requirements.txt
 
-      - name: Run deploy script
-        run: |
-          python deploy/main.py --version "${GITHUB_REF_NAME}"
+      - name: Build plugin archive
+        run: python deploy/main.py --version "${{ github.event.release.tag_name }}"
 
-      - name: List generated files
-        run: ls -R output || true
-
-      - name: Upload generated archives
-        uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v2
         with:
           files: output/*.zip
         env:
