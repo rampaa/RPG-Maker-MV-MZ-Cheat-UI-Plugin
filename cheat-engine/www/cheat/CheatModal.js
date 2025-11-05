@@ -34,7 +34,7 @@ export default {
     dark
     class="z-index-cheat-0"
     width="900"
-    height="800">
+    height="600">
     <v-row
         class="fill-height ma-0 pa-0">
         <div
