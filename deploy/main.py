@@ -119,7 +119,7 @@ if __name__ == '__main__':
         if os.path.exists(os.path.join(paths.temp.root_dir, '.idea')):
             shutil.rmtree(os.path.join(paths.temp.root_dir, '.idea'))
         create_cheat_version_file(args.version, paths)
-        shutil.make_archive(paths.get_output_file_path(game_type, args.version), 'gztar', paths.temp.root_dir)
+        shutil.make_archive(paths.get_output_file_path(game_type, args.version), 'zip', paths.temp.root_dir)
 
         # remove temp directory
         shutil.rmtree(paths.temp_root_path)
