@@ -39,7 +39,9 @@ class Paths:
     def __init__(self):
         self.temp_root_path = 'tmp'
 
-        self.origin = CheatPaths('../cheat-engine/www')
+        repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+        cheat_engine_path = os.path.join(repo_root, 'cheat-engine', 'www')
+        self.origin = CheatPaths(cheat_engine_path)
         self.temp = CheatPaths(os.path.join(self.temp_root_path, 'www'))
 
         self.deploy_output_dir = 'output'
