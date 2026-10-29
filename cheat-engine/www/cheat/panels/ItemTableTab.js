@@ -59,10 +59,11 @@ export default {
                 style="width: 60px;"
                 hide-details
                 solo
-                v-model="item.amount"
+                :value="item.editAmount === undefined ? item.amount : item.editAmount"
                 label="Amount"
                 dense
                 @keydown.self.stop
+                @input="onItemInput(item, $event)"
                 @change="onItemChange(item)"
                 @focus="$event.target.select()">
             </v-text-field>
@@ -162,12 +163,21 @@ export default {
         },
 
         onItemChange (item) {
+            if (item.editAmount !== undefined) {
+                item.amount = Number(item.editAmount)
+                this.$delete(item, 'editAmount')
+            }
+
             // modify amount
             const diff = item.amount - $gameParty.numItems(item._item)
             $gameParty.gainItem(item._item, diff)
 
             // refresh
             item.amount = $gameParty.numItems(item._item)
+        },
+
+        onItemInput (item, value) {
+            this.$set(item, 'editAmount', value)
         },
 
         onTableFilterChange () {

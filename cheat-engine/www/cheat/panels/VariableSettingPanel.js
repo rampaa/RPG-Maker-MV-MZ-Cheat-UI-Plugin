@@ -48,10 +48,11 @@ export default {
                 style="width: 200px;"
                 hide-details
                 solo
-                v-model="item.value"
+                :value="item.editValue === undefined ? item.value : item.editValue"
                 label="Value"
                 dense
                 @keydown.self.stop
+                @input="onItemInput(item, $event)"
                 @change="onItemChange(item)"
                 @focus="$event.target.select()">
             </v-text-field>
@@ -143,6 +144,11 @@ export default {
         },
 
         onItemChange (item) {
+            if (item.editValue !== undefined) {
+                item.value = item.editValue
+                this.$delete(item, 'editValue')
+            }
+
             // fix number typing
             if (item.varType === 'number') {
                 item.value = Number(item.value)
@@ -153,6 +159,10 @@ export default {
 
             // refresh
             item.value = $gameVariables.value(item.id)
+        },
+
+        onItemInput (item, value) {
+            this.$set(item, 'editValue', value)
         },
 
         tableItemFilter (value, search, item) {

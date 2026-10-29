@@ -21,10 +21,11 @@ export default {
                 style="width: 50px;"
                 hide-details
                 solo
-                v-model="item.hp.hp"
+                :value="item.editHp === undefined ? item.hp.hp : item.editHp"
                 label="Curr Hp"
                 dense
                 @keydown.self.stop
+                @input="onHpInput(item, $event)"
                 @change="onDataChange"
                 @focus="$event.target.select()">
             </v-text-field>
@@ -38,10 +39,11 @@ export default {
                 style="width: 50px;"
                 hide-details
                 solo
-                v-model="item.mp.mp"
+                :value="item.editMp === undefined ? item.mp.mp : item.editMp"
                 label="Curr Mp"
                 dense
                 @keydown.self.stop
+                @input="onMpInput(item, $event)"
                 @change="onDataChange"
                 @focus="$event.target.select()">
             </v-text-field>
@@ -102,7 +104,26 @@ export default {
     },
 
     methods: {
+        onHpInput (item, value) {
+            this.$set(item, 'editHp', value)
+        },
+
+        onMpInput (item, value) {
+            this.$set(item, 'editMp', value)
+        },
+
         onDataChange () {
+            for (const item of this.editingItems) {
+                if (item.editHp !== undefined) {
+                    item.hp.hp = Number(item.editHp)
+                    this.$delete(item, 'editHp')
+                }
+                if (item.editMp !== undefined) {
+                    item.mp.mp = Number(item.editMp)
+                    this.$delete(item, 'editMp')
+                }
+            }
+
             this.$emit('change', this.editingItems)
         }
     }
