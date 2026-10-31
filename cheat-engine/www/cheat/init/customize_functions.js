@@ -1,7 +1,8 @@
 // customize mv functions
-import {MessageCheat} from '../js/CheatHelper.js'
+import {BattleCheat, MessageCheat} from '../js/CheatHelper.js'
 
 export function customizeRPGMakerFunctions (mainComponent) {
+    BattleCheat.initialize()
     if (Utils.RPGMAKER_NAME === 'MV') {
         // WARN: directly changing engine code can be dangerous
         // remove preventDefault

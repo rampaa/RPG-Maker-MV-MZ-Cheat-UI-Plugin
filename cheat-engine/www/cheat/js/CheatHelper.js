@@ -424,6 +424,44 @@ export class SceneCheat {
 }
 
 export class BattleCheat {
+    static initialize () {
+        if (this.randomEncounterHooksInitialized) {
+            return
+        }
+
+        this.randomEncounterHooksInitialized = true
+        this.disableRandomEncounter = false
+        this.autoWinRandomEncounters = false
+
+        const executeEncounter = Game_Player.prototype.executeEncounter
+        Game_Player.prototype.executeEncounter = function () {
+            const encountered = executeEncounter.call(this)
+            if (encountered) {
+                BattleCheat.randomEncounterStarted = true
+            }
+            return encountered
+        }
+
+        const startBattle = BattleManager.startBattle
+        BattleManager.startBattle = function () {
+            startBattle.call(this)
+            if (BattleCheat.randomEncounterStarted) {
+                BattleCheat.randomEncounterStarted = false
+                if (BattleCheat.isAutoWinRandomEncounters()) {
+                    setTimeout(() => BattleCheat.victory(), 0)
+                }
+            }
+        }
+    }
+
+    static toggleAutoWinRandomEncounters () {
+        this.autoWinRandomEncounters = !this.isAutoWinRandomEncounters()
+    }
+
+    static isAutoWinRandomEncounters () {
+        return !!this.autoWinRandomEncounters
+    }
+
     static recover(member) {
         member.setHp(member.mhp)
         member.setMp(member.mmp)

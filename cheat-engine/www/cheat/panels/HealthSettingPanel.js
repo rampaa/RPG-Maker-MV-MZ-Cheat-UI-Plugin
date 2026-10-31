@@ -25,6 +25,17 @@ export default {
                 <span class="caption">Disable Random Encounter</span>
             </template>
         </v-checkbox>
+        <v-checkbox
+            v-model="autoWinRandomEncounters"
+            hide-details
+            dense
+            x-small
+            class="my-0 py-0"
+            @change="onAutoWinRandomEncountersChange">
+            <template v-slot:label>
+                <span class="caption">Auto-win Random Encounters</span>
+            </template>
+        </v-checkbox>
         <v-btn small @click.prevent="encounterBattle">Encounter</v-btn>
         <v-btn small @click.prevent="victory">Victory</v-btn>
         <v-btn small @click.prevent="defeat">Defeat</v-btn>
@@ -94,6 +105,7 @@ export default {
     data () {
         return {
             disableRandomEncounter: false,
+            autoWinRandomEncounters: false,
             enemy: [],
             party: []
         }
@@ -108,6 +120,7 @@ export default {
             this.enemy = $gameTroop.members().map(member => member)
             this.party = $gameParty.members().map(member => member)
             this.disableRandomEncounter = BattleCheat.isDisableRandomEncounter()
+            this.autoWinRandomEncounters = BattleCheat.isAutoWinRandomEncounters()
         },
 
         recoverAllEnemy () {
@@ -163,6 +176,10 @@ export default {
         onDisableRandomEncounterChange () {
             BattleCheat.toggleDisableRandomEncounter()
             this.initializeVariables()
+        },
+
+        onAutoWinRandomEncountersChange () {
+            BattleCheat.toggleAutoWinRandomEncounters()
         },
 
         onDetailChange (items) {
